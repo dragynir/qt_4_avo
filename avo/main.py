@@ -153,8 +153,6 @@ class Window(QWidget):
         run_avo_script()
 
 
-
-
     
     def __create_path_block(self, name, key, container, path_dict):
         hbox = QHBoxLayout()
@@ -162,7 +160,7 @@ class Window(QWidget):
         text_input = QLineEdit()
         button = QPushButton()
         button.setIcon(QIcon(os.path.join('res', 'file_folder.png')))
-        button.clicked.connect(partial(self.__on_choose_folder, name))
+        button.clicked.connect(partial(self.__on_choose_folder, key))
 
         hbox.addWidget(label, stretch=15)
         hbox.addWidget(text_input, stretch=75)

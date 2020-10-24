@@ -72,8 +72,8 @@ def run_avo_script():
 #     pictures_path = os.path.join(directory,'OUT_pics')
 #     metrics_path = os.path.join(directory,'OUT_metrics')
 
-    pictures_path = 'OUT_pics\\'
-    metrics_path = 'OUT_metrics\\'
+    pictures_path = '.\\OUT_pics\\'
+    metrics_path = '.\\OUT_metrics\\'
 
     qc_path = os.path.join(pictures_path,'QC')
     impulse_path = os.path.join(pictures_path,'Impulse')
