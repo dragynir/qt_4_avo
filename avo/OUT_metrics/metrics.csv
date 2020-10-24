@@ -1,0 +1,3 @@
+filename,Mean_kk_on_horizon,Mean_diff_ampl,Mean_disp_ampl,Percentage (threshold >30%)
+SuperSG_inl1340_crl5292_mute_filter,0.7866154428621949,0.2766,0.0575,37
+radon,0.8094816537596109,0.2191,0.012,24
