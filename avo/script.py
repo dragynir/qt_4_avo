@@ -32,7 +32,6 @@ def run_avo_script():
     pulse_directory = config.get('Paths', 'impulse')
 
 
-
     # Interval time analysis
     int_time1 = config.getint('Arguments', 'int_time1')
     int_time2 = config.getint('Arguments', 'int_time2')

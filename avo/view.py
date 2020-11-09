@@ -36,12 +36,21 @@ class ViewForms():
         slider.setMaximum(max_v)
 
         label = QLabel(name)
-        value_label = QLabel()
+        value_label = QLineEdit()
+        value_label.setValidator(QIntValidator(min_v, max_v))
         value_label.setText(str(min_v))
+            
+        def on_value_changed(x):
+            if x:
+                slider.setValue(int(x))
+            else:
+                slider.setValue(0)
+
+        value_label.textChanged[str].connect(on_value_changed)
+
 
         on_slider_changed = lambda x: value_label.setText(str(x))
         slider.valueChanged.connect(on_slider_changed)
-
 
         hbox.addWidget(label, stretch=15)
         hbox.addWidget(slider, stretch=75)
@@ -50,18 +59,28 @@ class ViewForms():
         return slider, hbox
     
     @staticmethod
+    def create_section_label(text, font):
+        
+        label = QLabel(text)
+        label.setFont(font)
+        label.setMargin(20)
+
+        return label
+
+
+    @staticmethod
     def create_button_group(label_name, names):
 
-        vbox = QVBoxLayout()
+        hbox = QHBoxLayout()
         label = QLabel(label_name)
-        vbox.addWidget(label)
+        hbox.addWidget(label)
 
         group = QButtonGroup()
         for name in names:
             btn = QRadioButton(name)
             group.addButton(btn)
-            vbox.addWidget(btn)
+            hbox.addWidget(btn)
         
         group.buttons()[0].setChecked(True)
 
-        return group, vbox
+        return group, hbox

@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QWidget, QRadioButton, QButtonGroup
-from PyQt5.QtWidgets import QLabel, QSlider, QPushButton, QFileDialog, QDialog, QLineEdit
+from PyQt5.QtWidgets import QLabel, QSlider, QPushButton, QFileDialog, QDialog, QLineEdit, QCheckBox
 from PyQt5.QtCore import Qt
+from PyQt5 import QtGui
 from PyQt5.QtGui import QDoubleValidator, QIcon, QIntValidator
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
@@ -77,22 +78,32 @@ class Window(QWidget):
 
     
     
+    
     def __setup_ui(self):
 
-        self.root.addWidget(QLabel('Input files:'))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+
+        self.root.setSpacing(5)
+
+        self.root.addWidget(ViewForms.create_section_label('Input files:', font), alignment=Qt.AlignCenter)
 
         self.root.addLayout(self.__create_path_inputs())
 
-        self.root.addWidget(QLabel('Interval time analysis:'))
+        self.root.addWidget(ViewForms.create_section_label('Interval time analysis:', font), alignment=Qt.AlignCenter)
 
         self.root.addLayout(self.__create_analysis_group_params())
 
-        self.root.addWidget(QLabel('Phase estimation parameters:'))
+
+
+
+        self.root.addWidget(ViewForms.create_section_label('Phase estimation parameters:', font), alignment=Qt.AlignCenter)
 
         self.root.addLayout(self.__create_synth_group_params())
 
         
-        self.root.addWidget(QLabel('Metrics parameters:'))
+        self.root.addWidget(ViewForms.create_section_label('Metrics parameters:', font), alignment=Qt.AlignCenter)
 
         self.root.addLayout(self.__create_metrics_group_params())
 
@@ -182,12 +193,15 @@ class Window(QWidget):
     
     def __on_choose_folder(self, name):
         path = QFileDialog.getExistingDirectory(self, 'Select directory')
-        self.path_dict[name].setText(path)
+        if path:
+            self.path_dict[name].setText(path)
 
+        
     
     def __create_analysis_group_params(self):
 
         vbox = QVBoxLayout()
+        vbox.setSpacing(10)
 
         self.int_time1, l = ViewForms.create_labeled_input('Time1 (ms): ', QIntValidator())
         vbox.addLayout(l)
@@ -198,31 +212,51 @@ class Window(QWidget):
         self.approx, l1 = ViewForms.create_button_group('Ampl approx:', ['richards', 'zoeppritz'])
         self.vsp, l2 = ViewForms.create_button_group('Extremum:', ['on', 'off'])
 
-        groups_layout = QHBoxLayout()
+        groups_layout = QVBoxLayout()
         groups_layout.addLayout(l1)
         groups_layout.addLayout(l2)
         vbox.addLayout(groups_layout)
 
         return vbox
 
+    def __muting_changed(self, state):
+
+        if state != Qt.Checked:
+            self.a1.setText('')
+            self.b1.setText('')
+            self.a1.setReadOnly(True)
+            self.b1.setReadOnly(True)
+        else:
+            self.a1.setText('0')
+            self.b1.setText('0')
+            self.a1.setReadOnly(False)
+            self.b1.setReadOnly(False)
+
     
     def __create_synth_group_params(self):
 
         vbox = QVBoxLayout()
+        vbox.setSpacing(10)
 
         self.win_len_smooth, l = ViewForms.create_labeled_input('Smooth velocity (odd): ', QIntValidator())
         vbox.addLayout(l)
         
 
         self.on, l = ViewForms.create_button_group('Muting:', ['yes', 'no'])
-        vbox.addLayout(l)
+
+        muting_cb = QCheckBox('Muting')
+        muting_cb.stateChanged.connect(self.__muting_changed)
+        # vbox.addWidget(cb)
 
         self.a1, l1 = ViewForms.create_labeled_input('a1: ', QDoubleValidator())
         self.b1, l2 = ViewForms.create_labeled_input('b1: ', QDoubleValidator())
+    
         
         params_layout = QHBoxLayout()
         params_layout.addLayout(l1)
         params_layout.addLayout(l2)
+        params_layout.addWidget(muting_cb)
+
         vbox.addLayout(params_layout)
 
         return vbox
@@ -232,6 +266,7 @@ class Window(QWidget):
     def __create_metrics_group_params(self):
 
         vbox = QVBoxLayout()
+        vbox.setSpacing(10)
 
         self.win, l = ViewForms.create_labeled_input('Window length: ', QIntValidator())
         vbox.addLayout(l)
