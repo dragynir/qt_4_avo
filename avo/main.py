@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QWidget, QRadioButton, QButtonGroup
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QWidget, QRadioButton, QButtonGroup, QGroupBox
 from PyQt5.QtWidgets import QLabel, QSlider, QPushButton, QFileDialog, QDialog, QLineEdit, QCheckBox
 from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
@@ -87,25 +87,26 @@ class Window(QWidget):
 
         self.root.setSpacing(5)
 
-        self.root.addWidget(ViewForms.create_section_label('Input files:', font), alignment=Qt.AlignCenter)
 
-        self.root.addLayout(self.__create_path_inputs())
-
-        self.root.addWidget(ViewForms.create_section_label('Interval time analysis:', font), alignment=Qt.AlignCenter)
-
-        self.root.addLayout(self.__create_analysis_group_params())
+        paths_group_box = QGroupBox('Input files:')
+        # self.root.addWidget(ViewForms.create_section_label('Input files:', font), alignment=Qt.AlignCenter)
+        paths_group_box.setLayout(self.__create_path_inputs())
+        self.root.addWidget(paths_group_box)
 
 
 
+        analysis_group_box = paths_group_box = QGroupBox('Interval time analysis:')
+        analysis_group_box.setLayout(self.__create_analysis_group_params())
+        self.root.addWidget(analysis_group_box)
 
-        self.root.addWidget(ViewForms.create_section_label('Phase estimation parameters:', font), alignment=Qt.AlignCenter)
+        synth_group_box = paths_group_box = QGroupBox('Phase estimation parameters:')
+        synth_group_box.setLayout(self.__create_synth_group_params())
+        self.root.addWidget(synth_group_box)
 
-        self.root.addLayout(self.__create_synth_group_params())
+        metrics_group_box = paths_group_box = QGroupBox('Metrics parameters:')
+        metrics_group_box.setLayout(self.__create_metrics_group_params())
+        self.root.addWidget(metrics_group_box)
 
-        
-        self.root.addWidget(ViewForms.create_section_label('Metrics parameters:', font), alignment=Qt.AlignCenter)
-
-        self.root.addLayout(self.__create_metrics_group_params())
 
         run_button = QPushButton('Run')
 
