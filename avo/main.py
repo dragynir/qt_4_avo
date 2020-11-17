@@ -247,7 +247,6 @@ class Window(QWidget):
 
         muting_cb = QCheckBox('Muting')
         muting_cb.stateChanged.connect(self.__muting_changed)
-        # vbox.addWidget(cb)
 
         self.a1, l1 = ViewForms.create_labeled_input('a1: ', QDoubleValidator())
         self.b1, l2 = ViewForms.create_labeled_input('b1: ', QDoubleValidator())
