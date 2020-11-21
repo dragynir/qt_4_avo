@@ -223,13 +223,9 @@ class Window(QWidget):
     def __muting_changed(self, state):
 
         if state != Qt.Checked:
-            self.a1.setText('')
-            self.b1.setText('')
             self.a1.setReadOnly(True)
             self.b1.setReadOnly(True)
         else:
-            self.a1.setText('0')
-            self.b1.setText('0')
             self.a1.setReadOnly(False)
             self.b1.setReadOnly(False)
 
@@ -253,9 +249,10 @@ class Window(QWidget):
     
         
         params_layout = QHBoxLayout()
+
+        params_layout.addWidget(muting_cb)
         params_layout.addLayout(l1)
         params_layout.addLayout(l2)
-        params_layout.addWidget(muting_cb)
 
         vbox.addLayout(params_layout)
 
